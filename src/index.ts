@@ -1,3 +1,4 @@
-import { App } from "./app"
+import { App } from "./app";
+import config from "./app/config";
 
-new App().server.listen(8888);
+new App().server.listen(config.port);
