@@ -1,9 +1,11 @@
 import dotenv from 'dotenv'; 
+import { resolve } from 'path';
 const env = process.env.ENV || "development";
-dotenv.config(); 
+dotenv.config();
 
 export default {
     port: process.env.PORT,
+    dataPath: resolve("data"),
     database: {
         development: {
             "username": process.env.DB_USERNAME,
