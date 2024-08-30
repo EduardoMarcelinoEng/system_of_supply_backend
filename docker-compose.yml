@@ -1,0 +1,61 @@
+version: '1.0'
+
+networks:
+  my_local_network:
+    external: true
+
+services:
+  mysql:
+    image: mysql:latest
+    container_name: database_mysql
+    command: --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - ./data/mysql:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ALLOW_EMPTY_PASSWORD: 1
+      MYSQL_HOST: mysql
+      LANG: C.UTF-8
+    ports:
+      - 3306:3306
+    networks:
+      - my_local_network
+
+  api_rest_development:
+    build:
+      context: .
+      dockerfile: ./Dockerfile.development
+    container_name: api_rest_development
+    env_file: .env
+    ports:
+      - ${PORT}:${PORT}
+    volumes:
+      - ./src:/api_rest/src
+    links:
+      - mysql
+    depends_on:
+      - mysql
+    stdin_open: true
+    tty: true
+    networks:
+      - my_local_network
+
+  # api_rest_production:
+  #   build:
+  #     context: .
+  #     dockerfile: ./Dockerfile
+  #   container_name: api_rest_production
+  #   env_file: .env
+  #   ports:
+  #     - ${PORT}:${PORT}
+  #   volumes:
+  #     - ./data:/api_rest/data
+  #   links:
+  #     - mysql
+  #   depends_on:
+  #     - mysql
+  #   stdin_open: true
+  #   tty: true
+  #   networks:
+  #     - my_local_network
