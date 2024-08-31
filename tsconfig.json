@@ -10,5 +10,11 @@
     "noImplicitAny": true,
     "esModuleInterop": true,
     "resolveJsonModule": true
-  }
+  },
+  "exclude": [
+    "./build/**/*",
+    "./jest.config.js",
+    "./gulpfile.js",
+    "./__tests__"
+  ]
 }

@@ -109,7 +109,7 @@ class MeasurementController {
             pathFile = join(pathCustomer, fileName);
             
             writeFileSync(pathFile, image.replace(/^data:image\/.+;base64,/, ""), 'base64');
-
+            
             const measurementNumber = await geminiService.recognizeImage(pathFile, "What the measurement?")
                 .then(result=>{
                     const measurement = (result as string).match(/\d+\.?\d+/);
@@ -123,7 +123,7 @@ class MeasurementController {
                 measureType: measure_type,
                 fileName
             });
-
+            
             return res.json({
                 image_url: `${req.protocol}://${req.headers.host}/get-file/${customer_code}/${fileName}`,
                 measure_value: measurementNumber,
